@@ -1,6 +1,6 @@
 module github.com/gigvault/notify
 
-go 1.24.0
+go 1.23
 
 require (
 	github.com/gigvault/shared v1.0.0
