@@ -1,22 +1,37 @@
+# Stage 1: Build
 FROM golang:1.23-bullseye AS builder
+
 WORKDIR /src
 
-# Copy shared library first
-COPY shared/ ./shared/
+# Copy go mod files
+COPY go.mod go.sum ./
 
-# Copy service files
-COPY notify/go.mod notify/go.sum ./notify/
-WORKDIR /src/notify
+# Download dependencies (including shared v1.0.0 from GitHub)
 RUN go mod download
 
-WORKDIR /src
-COPY notify/ ./notify/
-WORKDIR /src/notify
-RUN CGO_ENABLED=0 GOOS=linux go build -o /out/notify ./cmd/notify
+# Copy source code
+COPY . .
 
+# Build the service
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app/notify ./cmd/notify
+
+# Stage 2: Runtime
 FROM alpine:3.18
-RUN apk add --no-cache ca-certificates
-COPY --from=builder /out/notify /usr/local/bin/notify
-COPY notify/config/ /config/
+
+# Install CA certificates for HTTPS
+RUN apk --no-cache add ca-certificates
+
+# Copy binary from builder
+COPY --from=builder /app/notify /usr/local/bin/notify
+
+# Copy config if exists
+COPY config/ /config/ 2>/dev/null || true
+
+# Expose ports
 EXPOSE 8080 9090
+
+# Run as non-root user
+RUN adduser -D -u 1000 gigvault
+USER gigvault
+
 ENTRYPOINT ["/usr/local/bin/notify"]
