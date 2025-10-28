@@ -3,7 +3,7 @@ module github.com/gigvault/notify
 go 1.23
 
 require (
-	github.com/gigvault/shared v1.0.0
+	github.com/gigvault/shared v1.1.0
 	github.com/gorilla/mux v1.8.1
 	go.uber.org/zap v1.26.0
 )
