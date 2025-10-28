@@ -1,6 +1,6 @@
 module github.com/gigvault/notify
 
-go 1.23
+go 1.24.0
 
 require (
 	github.com/gigvault/shared v1.0.0
@@ -12,3 +12,5 @@ require (
 	go.uber.org/multierr v1.10.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/gigvault/shared => ../shared
