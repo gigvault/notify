@@ -1,0 +1,4 @@
+bin/
+config/config.yaml
+*.key
+*.crt

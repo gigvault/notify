@@ -1,0 +1,28 @@
+service:
+  name: notify
+  environment: development
+  version: 1.0.0
+
+database:
+  host: localhost
+  port: 5432
+  database: gigvault_notify
+  user: gigvault
+  password: changeme
+  sslmode: disable
+
+server:
+  http_port: 8089
+  grpc_port: 9089
+  host: 0.0.0.0
+
+logging:
+  level: info
+  format: json
+
+security:
+  tls_enabled: false
+  tls_cert_path: /etc/certs/tls.crt
+  tls_key_path: /etc/certs/tls.key
+  mtls_enabled: false
+  ca_cert_path: /etc/certs/ca.crt
